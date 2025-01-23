@@ -2,20 +2,21 @@
 #include "IITM.hpp"
 int main(){
     srand(time(0)) ;
-    int N , M ;
+    int N , M ; std::cin >> N >> M ;
     std::vector<BTech> BTechList ;
     std::vector<DD> DDList ;
     std::vector<Faculty> facultyList ;
     int numHostels = 7 ;
+
     std::vector<std::string> Hostels = {"Mandakini" , "Cauvery" , "Krishna" , "Narmada" , "Tapti" , "Brahmaputra" , "Thamirabarani"} ;
     for(int i = 0 ; i < M ; ++i){
-        int namelen = rand()%15 ;
+        int namelen = 1 + rand()%15 ;
         std::string name = "" ;
-        for(int i = 0 ; i < namelen ; i++){
+        for(int j = 0 ; j < namelen ; j++){
             int charnum = rand()%26 ;
             name += ('a' + charnum) ;
         }        
-        bool isPermanent = (rand()%2 == 0 ? false : true) ;
+        bool isPermanent = (rand()%10 >= 6 ? false : true) ;
         Faculty f1 ;
         f1.Name(name) ;
         f1.isPermanent(isPermanent) ;
@@ -23,10 +24,10 @@ int main(){
     }
 
     for(int i = 0 ; i < N ; ++i){
-        int namelen = rand()%15 ;
+        int namelen = 1 + rand()%15 ;
         std::string name = "" ;
         RollNumber r  ;
-        for(int i = 0 ; i < namelen ; i++){
+        for(int j = 0 ; j < namelen ; j++){
             int charnum = rand()%26 ;
             name += ('a' + charnum) ;
         }
@@ -50,10 +51,9 @@ int main(){
     for(int i = 0 ; i < DDList.size() ; ++i){
         int rndm = rand()%M ;
         if(facultyList[rndm].numTAs() < 5){
-            DDList[i].setTASupervisor(facultyList[rndm]) ;
+            DDList[i].setTASupervisor(&facultyList[rndm]) ;
             facultyList[rndm].addTA(&DDList[i]);            
         }
-
     }
 
     std::multimap<float,BTech, std::greater<float>> ByCGPA = CS.getCGPAmap()  ;
@@ -80,7 +80,7 @@ int main(){
         }
         else{
             if(facultyList[ptr].numDDProjectees() < 2 && facultyList[ptr].isPermanent()){
-                i.second.setDDPGuide(facultyList[ptr]);
+                i.second.setDDPGuide(&facultyList[ptr]);
                 facultyList[ptr].addDDProjectee(&i.second);
             }
             else{
@@ -88,5 +88,11 @@ int main(){
             }
         }
     }
-
+    CS.printStudentsByRoll() ;
+    CS.printStudentsByHostel() ;
+    CS.printStudentsByGuide() ;
+    CS.printStudentsUnassigned() ;
+    CS.maxProjectees() ;
+    CS.percentageStudents() ;
+    CS.printDDgnHostelFaculty(Hostels[2] , &facultyList[2]);
 }

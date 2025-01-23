@@ -14,7 +14,7 @@ public:
         return !this->isAdjunct ;
     }
     void Name(std::string name){
-        std::cout << "Setting Name for Faculty" << std::endl ;
+        std::cout << "Setting Name for Faculty " << name << std::endl ;
         this->name = name ;
     }
     std::string getName(){
@@ -47,8 +47,8 @@ public:
     std::vector<Student*> getDD(){
         return this->numDD ;
     }
-    bool operator==(Faculty other){
-        if(other.name == this->name){
+    bool operator==(Faculty *other){
+        if(other->name == this->name){
             return true ;
         }
         return false ;
@@ -66,14 +66,13 @@ class Student{
 
 public:
     std::string name ;
-
     void init(RollNumber r , std::string hostel , Faculty& facad , float cgpa , std::string name , bool isBTech){
-        std::cout <<"Initialisation for Student" << std::endl ;
         this->roll = r ;
         this->hostel = hostel ;
         this->facad = facad ;
         this->cgpa = cgpa ;
         this->isBTech = isBTech ;
+        this->name = name ;
     }
 
     std::string getRoll(){
@@ -120,7 +119,8 @@ protected:
 class BTech : public Student{
 
 public:
-    BTech(RollNumber r , std::string hostel , Faculty& facad , float cgpa , std::string name , bool isBTech){
+    BTech(RollNumber r , std::string hostel , Faculty& facad , float cgpa , std::string name , bool isBTech):Student(){
+        std::cout << "Initialized BTech Student " << std::endl ;
         this->init(r ,  hostel , facad ,  cgpa , name , isBTech) ;
     }
     void setBTPGuide(Faculty& facad){
@@ -141,25 +141,26 @@ class DD : public Student{
 
 public:
     DD(RollNumber r , std::string hostel , Faculty& facad , float cgpa , std::string name , bool isBTech){
+        std::cout << "Initialized DD Student " << std::endl ;
         this->init(r ,  hostel , facad ,  cgpa , name , isBTech) ;
     }
-    void setDDPGuide(Faculty& facad){
+    void setDDPGuide(Faculty* facad){
         std::cout << "Setting DDP Guide for " << this->name << std::endl ;
         this->DDPGuide = facad ;
         this->hasGuide = true ;
     }
-    Faculty getDDPGuide(){
+    Faculty* getDDPGuide(){
         return this->DDPGuide ;
     }
-    void setTASupervisor(Faculty& facad){
+    void setTASupervisor(Faculty* facad){
         std::cout << "Setting TA Supervisor for " << this->name << std::endl ;
         this->Supervisor = facad ;
     }
-    Faculty getTASupervisor(){
+    Faculty* getTASupervisor(){
         return this->Supervisor ;
     }
 
 private:
-    Faculty DDPGuide ;
-    Faculty Supervisor ;    
+    Faculty* DDPGuide ;
+    Faculty* Supervisor ;    
 };

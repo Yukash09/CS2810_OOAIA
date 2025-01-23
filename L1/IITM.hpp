@@ -7,6 +7,7 @@ public:
         this->BTechList = BTechs ;
         this->DDList = DDs ;
         this->facultyList = faculties ;
+        this->createMaps() ;
     }
     bool checkConstraints(Faculty& facad){
         std::cout << "Checking constraints" << std::endl ;
@@ -43,12 +44,12 @@ public:
         std::cout << "Unassigned Students" << std::endl ;
         for(int i = 0 ; i < this->BTechList.size() ; ++i){
             if(this->BTechList[i].needGuide()){
-                std::cout << this->BTechList[i].name ;
+                std::cout << this->BTechList[i].name << std::endl ;
             }
         }
         for(int i = 0 ; i < this->DDList.size() ; ++i){
             if(this->DDList[i].needGuide()){
-                std::cout << this->DDList[i].name ;
+                std::cout << this->DDList[i].name << std::endl ;
             }
         }
     }
@@ -82,9 +83,7 @@ public:
         int count = 0 ; 
         for(int i = 0 ; i < this->DDList.size() ; ++i){
             DD student = this->DDList[i] ;
-            Faculty DDP = student.getDDPGuide() ;
-            Faculty TA = student.getTASupervisor() ;
-            if(TA == DDP){
+            if(student.getDDPGuide() == student.getTASupervisor()){
                 count++ ;
             }
         }
@@ -92,8 +91,8 @@ public:
         std::cout << "Percentage of students with DDP Guide same as TA Supervisor " << percentage*100 << std::endl ;
         return percentage*100 ;
     }
-    void printDDgnHostelFaculty(std::string hostel , Faculty facad){
-        std::cout << "DD students with faculty " << facad.getName() << " in hostel " << hostel << std::endl ;
+    void printDDgnHostelFaculty(std::string hostel , Faculty* facad){
+        std::cout << "DD students with faculty " << facad->getName() << " in hostel " << hostel << std::endl ;
         for(int i = 0 ; i <  this->DDList.size() ; ++i){
             DD student = this->DDList[i] ;
             if(student.getHostel() == hostel){
